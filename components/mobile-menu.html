@@ -1,0 +1,153 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  📲 COMPONENTE: MENU MOBILE (painel lateral)                 ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  📌 COMO USAR:                                               ║
+  ║  No index.html:                                              ║
+  ║    <div id="mobile-menu-container"></div>                    ║
+  ║                                                              ║
+  ║  📎 Estilos: css/nav.css (mesmo arquivo da navbar)           ║
+  ║  📎 Lógica:  js/nav.js (mesmo arquivo da navbar)             ║
+  ║                                                              ║
+  ║  ⚠️ Depende da navbar existir primeiro no DOM.               ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<!-- ── PAINEL LATERAL ────────────────────────────────────────
+     role="dialog"     → indica pro leitor de tela que é um modal
+     aria-modal="true" → impede navegação fora do painel
+     hidden            → começa escondido (JS remove ao abrir)
+──────────────────────────────────────────────────────────── -->
+<nav class="mob-menu" id="mobMenu" role="dialog" aria-modal="true"
+     aria-label="Menu de navegação" hidden>
+
+  <!-- Cabeçalho do menu: nome + botão fechar -->
+  <div class="mob-menu-hdr">
+    <span class="mob-menu-brand" aria-hidden="true">
+      VANESSA <span class="accent">RAFAELLA</span>
+    </span>
+    <button class="mob-close" id="mobClose" aria-label="Fechar menu">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <!-- ── LINKS DE NAVEGAÇÃO ────────────────────────────────
+       Âncoras internas (#seção) que rolam a página.
+       Cada link tem ícone + texto traduzível.
+       
+       border-left: 2px → barra lateral aparece no hover (visual)
+  ──────────────────────────────────────────────────────── -->
+  <nav class="mob-nav" aria-label="Links de navegação mobile">
+    <a href="#main-platforms">
+      <i class="fas fa-fire" aria-hidden="true"></i>
+      <span data-pt="Plataformas" data-en="Platforms" data-es="Plataformas">Plataformas</span>
+    </a>
+    <a href="#gallery">
+      <i class="fas fa-images" aria-hidden="true"></i>
+      <span data-pt="Galeria" data-en="Gallery" data-es="Galería">Galeria</span>
+    </a>
+    <a href="#exclusive">
+      <i class="fas fa-star" aria-hidden="true"></i>
+      <span data-pt="Exclusivo" data-en="Exclusive" data-es="Exclusivo">Exclusivo</span>
+    </a>
+    <a href="#cta">
+      <i class="fas fa-link" aria-hidden="true"></i>
+      <span data-pt="Links" data-en="Links" data-es="Links">Links</span>
+    </a>
+    <div class="mob-divider"></div>
+  </nav>
+
+  <!-- ── GRID DE PLATAFORMAS ─────────────────────────────
+       5 ícones em grid (Privacy, OnlyFans, Fotos, Telegram, WhatsApp).
+       Cada um com ícone + label curto.
+  ──────────────────────────────────────────────────────── -->
+  <div class="mob-label"
+       data-pt="Plataformas" data-en="Platforms" data-es="Plataformas">
+    Plataformas
+  </div>
+
+  <div class="mob-plats">
+    <a href="https://privacy.com.br/checkout/vanessarafaella"
+       class="mob-plat" aria-label="Privacy" target="_blank" rel="noopener">
+      <div class="mob-plat-icon">
+        <img src="./assets/images/privacy-full-icon.png" alt="Privacy"
+             onerror="this.parentNode.innerHTML='🔒'">
+      </div>
+      <span>Privacy</span>
+    </a>
+
+    <a href="https://www.onlyfans.com/vanessarafaellavip"
+       class="mob-plat" aria-label="OnlyFans" target="_blank" rel="noopener">
+      <div class="mob-plat-icon">
+        <img src="./assets/images/of-blue-icon.png" alt="OnlyFans"
+             onerror="this.parentNode.innerHTML='🔥'">
+      </div>
+      <span>OnlyFans</span>
+    </a>
+
+    <a href="#gallery" class="mob-plat" aria-label="Fotos">
+      <div class="mob-plat-icon">
+        <img src="./assets/images/fotos-icon.png" alt="Fotos"
+             onerror="this.parentNode.innerHTML='📸'">
+      </div>
+      <span data-pt="Fotos" data-en="Photos" data-es="Fotos">Fotos</span>
+    </a>
+
+    <a href="https://t.me/+gyIHkFWeeB8yY2Zk"
+       class="mob-plat" aria-label="Telegram" target="_blank" rel="noopener">
+      <div class="mob-plat-icon">
+        <img src="./assets/icon/telegram-icon.png" alt="Telegram"
+             onerror="this.parentNode.innerHTML='✈️'">
+      </div>
+      <span>Telegram</span>
+    </a>
+
+    <a href="https://wa.me/5581995469947"
+       class="mob-plat" aria-label="WhatsApp" target="_blank" rel="noopener" id="mobWa">
+      <div class="mob-plat-icon">
+        <img src="./assets/icon/new-wpp-icon.png" alt="WhatsApp"
+             onerror="this.parentNode.innerHTML='💬'">
+      </div>
+      <span>WhatsApp</span>
+    </a>
+  </div>
+
+  <!-- ── RODAPÉ DO MENU ──────────────────────────────────
+       Redes sociais + botão de tema.
+  ──────────────────────────────────────────────────────── -->
+  <div class="mob-menu-footer">
+
+    <!-- Ícones sociais -->
+    <div class="mob-socials" aria-label="Redes sociais">
+      <a href="https://www.onlyfans.com/vanessarafaellavip"
+         class="mob-soc-btn onlyfans" aria-label="OnlyFans">
+        <i class="fas fa-fire" aria-hidden="true"></i>
+      </a>
+      <a href="https://x.com/vvanessarafaela"
+         class="mob-soc-btn twitter" aria-label="Twitter / X">
+        <i class="fab fa-x-twitter" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.instagram.com/vvanessarafaella"
+         class="mob-soc-btn instagram" aria-label="Instagram">
+        <i class="fab fa-instagram" aria-hidden="true"></i>
+      </a>
+      <a href="https://wa.me/5581995469947"
+         class="mob-soc-btn whatsapp" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <!-- Botão de tema no mobile -->
+    <button class="mob-theme-btn" id="mobThemeBtn" aria-label="Alternar tema">
+      <span>
+        <i class="fas fa-adjust" aria-hidden="true"></i>&nbsp;
+        <span data-pt="Alterar Tema" data-en="Toggle Theme" data-es="Cambiar Tema">
+          Alterar Tema
+        </span>
+      </span>
+      <span id="mobThemeLbl" aria-live="polite">Escuro</span>
+    </button>
+  </div>
+</nav>

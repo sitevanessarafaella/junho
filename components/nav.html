@@ -1,0 +1,170 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  🧭 COMPONENTE: NAVBAR                                       ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  📌 COMO USAR:                                               ║
+  ║  No index.html, coloque:                                     ║
+  ║    <header>                                                  ║
+  ║      <div id="nav-container"></div>                          ║
+  ║    </header>                                                 ║
+  ║                                                              ║
+  ║  E no JS:                                                    ║
+  ║    loadComponent('nav-container', './components/nav.html');   ║
+  ║                                                              ║
+  ║  📎 Estilos: css/nav.css                                     ║
+  ║  📎 Lógica:  js/nav.js                                       ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<nav class="nav" id="mainNav" role="navigation" aria-label="Navegação principal">
+  <div class="nav-inner">
+
+    <!-- ── LOGO ──────────────────────────────────────────────
+         Sempre linka pra index.html (página inicial).
+         Contém: foto com selo verificado + nome + subtítulo.
+         
+         aria-label → descreve o link pra leitores de tela.
+         onerror    → se a imagem falhar, mostra um placeholder.
+    ──────────────────────────────────────────────────────── -->
+    <a class="nav-logo" href="./index.html" aria-label="Vanessa Rafaella — página inicial">
+      <div class="nav-logo-photo" aria-hidden="true">
+        <img src="./assets/img/pic-nav-section-vanessa-rafaella.svg"
+             alt="Foto de perfil de Vanessa Rafaella"
+             width="52" height="52" loading="eager"
+             onerror="this.src='https://placehold.co/42x42/E50914/fff?text=VR'">
+        <div class="verified-badge">
+          <i class="fas fa-check"></i>
+        </div>
+      </div>
+      <div class="nav-logo-text" aria-hidden="true">
+        <span class="nav-logo-name">VANESSA&nbsp;<span class="accent">RAFAELLA</span></span>
+        <span class="nav-logo-sub"
+              data-pt="SITE Oficial"
+              data-en="Official WEBSITE"
+              data-es="SITIO WEB OFICIAL">
+          SITE Oficial
+        </span>
+      </div>
+    </a>
+
+
+    <!-- ── LINKS DESKTOP ─────────────────────────────────────
+         Visíveis só em telas grandes (≥ 768px via CSS).
+         
+         data-pt / data-en / data-es → textos em cada idioma.
+         O lang.js troca o textContent baseado no idioma ativo.
+         
+         target="_blank" → abre em nova aba.
+         rel="noopener"  → segurança: impede que a página aberta
+                           acesse window.opener do seu site.
+    ──────────────────────────────────────────────────────── -->
+    <ul class="nav-links" aria-label="Links do menu principal">
+      <li>
+        <a href="https://privacy.com.br/checkout/vanessarafaella"
+           class="nav-link-privacy"
+           target="_blank" rel="noopener"
+           data-pt="Privacy" data-en="Privacy" data-es="Privacy">
+          Privacy
+        </a>
+      </li>
+      <li>
+        <a href="https://www.onlyfans.com/vanessarafaellavip"
+           class="nav-link-onlyfans"
+           target="_blank" rel="noopener"
+           data-pt="OnlyFans" data-en="OnlyFans" data-es="OnlyFans">
+          OnlyFans
+        </a>
+      </li>
+      <li>
+        <a href="https://t.me/VanessaRafaellaBot"
+           class="nav-link-videos"
+           target="_blank" rel="noopener"
+           data-pt="Packs de Vídeos" data-en="Video Packs" data-es="Packs de Videos">
+          Packs de Vídeos
+        </a>
+      </li>
+    </ul>
+
+
+    <!-- ── CONTROLES ─────────────────────────────────────────
+         Grupo de botões no lado direito da navbar:
+         1. Tema (dark/light)
+         2. Idioma (PT/EN/ES)
+         3. Botão MENU rosa (desktop ≥ 768px)
+         4. Hamburger ☰ (mobile)
+    ──────────────────────────────────────────────────────── -->
+    <div class="nav-controls">
+
+      <!-- 1. BOTÃO DE TEMA ─────────────────────────────────
+           Alterna entre dark e light.
+           O JS em nav.js:
+           - Troca data-theme no <html>
+           - Troca o emoji (🌙 ↔ ☀️)
+           - Salva a preferência no localStorage
+      ──────────────────────────────────────────────────── -->
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema">🌙</button>
+
+      <!-- 2. SELETOR DE IDIOMA ────────────────────────────
+           Dropdown com 3 opções: PT, EN, ES.
+           
+           aria-haspopup="listbox" → indica que abre uma lista
+           aria-expanded="false"   → indica que está fechado
+           
+           O JS em nav.js:
+           - Abre/fecha o dropdown
+           - Troca bandeira + código (🇧🇷 PT → 🇺🇸 EN)
+           - Atualiza todos os [data-pt], [data-en], [data-es]
+      ──────────────────────────────────────────────────── -->
+      <div class="lang-sel" id="langSel">
+        <button class="lang-btn" id="langTrigger"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Idioma">
+          <span id="langFlag">🇧🇷</span>
+          <span id="langCode">PT</span>
+          <span class="lang-arrow">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </span>
+        </button>
+
+        <div class="lang-drop" id="langDrop" role="listbox">
+          <p>Idioma</p>
+          <button class="lang-opt" data-lang="pt" data-flag="🇧🇷" aria-selected="true">
+            <span>🇧🇷</span><span>Português</span>
+          </button>
+          <button class="lang-opt" data-lang="en" data-flag="🇺🇸" aria-selected="false">
+            <span>🇺🇸</span><span>English</span>
+          </button>
+          <button class="lang-opt" data-lang="es" data-flag="🇪🇸" aria-selected="false">
+            <span>🇪🇸</span><span>Español</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. BOTÃO MENU (desktop) ─────────────────────────
+           Visível só em ≥ 768px.
+           Abre o mesmo painel lateral do hamburger.
+           
+           aria-controls="mobMenu" → indica qual elemento ele controla
+           aria-expanded="false"   → indica que o menu está fechado
+      ──────────────────────────────────────────────────── -->
+      <button class="btn-menu-desktop" id="btnMenuDesktop"
+              aria-label="Abrir menu" aria-expanded="false" aria-controls="mobMenu">
+        MENU
+      </button>
+
+      <!-- 4. HAMBURGER (mobile) ──────────────────────────
+           3 spans = 3 linhas do ícone ☰.
+           Quando ativo, as linhas viram um X via CSS.
+      ──────────────────────────────────────────────────── -->
+      <button class="hamburger" id="hamburger"
+              aria-label="Abrir menu" aria-expanded="false" aria-controls="mobMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</nav>

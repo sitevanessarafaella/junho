@@ -1,0 +1,453 @@
+/* ════════════════════════════════════════════════════════════════
+   📄 base.css — Vanessa Rafaella · Fire Edition
+   ════════════════════════════════════════════════════════════════
+   
+   Este é o ALICERCE de todo o site.
+   Tudo que os outros arquivos CSS usam (cores, fontes, espaçamento)
+   está definido aqui como variáveis CSS.
+   
+   📌 COMO FUNCIONA:
+   Variáveis CSS são escritas com -- na frente: --nome-da-variavel
+   Você usa com var(): background: var(--bg);
+   Se mudar aqui, muda em TODOS os arquivos automaticamente.
+   
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🎨 VARIÁVEIS GLOBAIS — DESIGN SYSTEM
+   ───────────────────────────────────────────────────────────────
+   Tudo que define a identidade visual fica aqui.
+   Nunca escreva uma cor ou fonte diretamente no CSS dos componentes.
+   Sempre use var(--nome).
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+
+  /* ─── TIPOGRAFIA ─────────────────────────────────────────────
+     3 fontes, cada uma com um papel:
+     
+     --font-display → títulos grandes, impacto visual
+                      Bricolage Grotesque: geométrica, moderna, bold
+     
+     --font-accent  → palavras em destaque, itálicos elegantes
+                      Fraunces: serifa com personalidade, italiana
+     
+     --font-body    → texto corrido, listas, descrições
+                      Manrope: limpa, legível em qualquer tamanho
+  ──────────────────────────────────────────────────────────── */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-accent:  'Fraunces', Georgia, serif;
+  --font-body:    'Manrope', system-ui, sans-serif;
+
+
+  /* ─── CORES — IDENTIDADE FIRE 🔥 ────────────────────────────
+     A paleta principal é baseada em fogo: vermelho + laranja.
+     Cada plataforma tem sua cor própria.
+  ──────────────────────────────────────────────────────────── */
+
+  /* Fogo — cores principais da marca */
+  --fire-red:     #E50914;   /* vermelho forte — destaque, glows, badges */
+  --fire-orange:  #FF6B00;   /* laranja — CTAs, links, acentos */
+  --fire-yellow:  #FFB800;   /* amarelo — avisos, destaques especiais */
+  --fire-glow:    rgba(229, 9, 20, 0.25);    /* brilho vermelho suave */
+  --fire-shadow:  rgba(255, 107, 0, 0.30);   /* sombra laranja em cards */
+
+  /* Plataformas — cada uma com sua identidade */
+  --privacy:    #F07206;   /* Privacy → laranja */
+  --onlyfans:   #00AFF0;   /* OnlyFans → azul */
+  --xvideos:    #E50914;   /* XVideos → vermelho */
+  --twitter:    #1DA1F2;   /* Twitter/X → azul claro */
+  --instagram:  #E4405F;   /* Instagram → rosa/magenta */
+  --whatsapp:   #25D366;   /* WhatsApp → verde */
+  --telegram:   #2AABEE;   /* Telegram → azul */
+
+  /* Cores utilitárias */
+  --success:  #22C55E;   /* verde — confirmações */
+  --warning:  #F59E0B;   /* amarelo — avisos */
+  --danger:   #EF4444;   /* vermelho — erros */
+
+
+  /* ─── ANIMAÇÃO ───────────────────────────────────────────────
+     Velocidades e curvas reutilizáveis.
+     
+     --duration → tempo padrão das transições (0.3s é rápido mas suave)
+     --ease-out → curva que começa rápido e desacelera (natural)
+     --ease-spring → curva com "bounce" sutil (pra hover em cards)
+  ──────────────────────────────────────────────────────────── */
+  --duration:    0.3s;
+  --ease-out:    cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+
+  /* ─── LAYOUT ─────────────────────────────────────────────────
+     Medidas estruturais do site.
+     
+     --nav-height      → altura fixa da navbar (usada como padding-top nas páginas)
+     --container-max    → largura máxima do conteúdo (evita texto muito largo)
+     --container-padding → espaçamento lateral responsivo com clamp()
+     
+     clamp(mínimo, preferido, máximo):
+     clamp(1rem, 5vw, 2.5rem) = no mínimo 1rem, idealmente 5% da tela, máximo 2.5rem
+  ──────────────────────────────────────────────────────────── */
+  --nav-height:        68px;
+  --footer-bar-height: 72px;
+  --container-max:     1100px;
+  --container-padding: clamp(1rem, 5vw, 2.5rem);
+
+  /* Bordas — raios padrão pra manter consistência */
+  --radius-sm:  8px;    /* botões pequenos, inputs */
+  --radius-md:  14px;   /* cards secundários */
+  --radius-lg:  20px;   /* cards principais */
+  --radius-full: 999px; /* pílulas, badges, botões redondos */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🌙 TEMA ESCURO (padrão)
+   ───────────────────────────────────────────────────────────────
+   O site abre em modo escuro por padrão.
+   Essas variáveis controlam cores de fundo, texto e bordas.
+   
+   Por que separar do :root?
+   Porque quando o usuário clicar no botão de tema,
+   o JS troca data-theme="dark" por data-theme="light"
+   e o CSS aplica automaticamente as cores do tema claro.
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  /* Fundos — do mais escuro ao mais claro */
+  --bg:          #050508;   /* fundo principal — quase preto com leve azul */
+  --bg-soft:     #0A0A0F;   /* fundo de seções alternadas */
+  --bg-card:     #111116;   /* fundo dos cards */
+  --bg-elevated: #1A1A20;   /* elementos "acima" do card (hover, dropdown) */
+  --bg-mid:      #222228;   /* divisórias, áreas intermediárias */
+
+  /* Bordas — rosa/fogo sutil pra criar profundidade */
+  --border:    rgba(255, 107, 0, 0.10);   /* bordas sutis — quase invisíveis */
+  --border-hi: rgba(255, 107, 0, 0.25);   /* bordas de destaque — hover, foco */
+
+  /* Texto — hierarquia de 4 níveis */
+  --ink:       #F0ECE8;   /* texto principal — títulos, corpo */
+  --ink-soft:  rgba(240, 236, 232, 0.72);  /* texto secundário — descrições */
+  --ink-mute:  rgba(240, 236, 232, 0.45);  /* texto terciário — labels, hints */
+  --ink-faint: rgba(240, 236, 232, 0.20);  /* texto quase invisível — decorativo */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ☀️ TEMA CLARO
+   ───────────────────────────────────────────────────────────────
+   Ativado quando data-theme="light".
+   Mesmas variáveis, valores invertidos.
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg:          #FAFAF8;
+  --bg-soft:     #F2F0EE;
+  --bg-card:     #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-mid:      #E8E6E3;
+
+  --border:    rgba(0, 0, 0, 0.08);
+  --border-hi: rgba(255, 107, 0, 0.30);
+
+  --ink:       #0F0F0F;
+  --ink-soft:  rgba(15, 15, 15, 0.72);
+  --ink-mute:  rgba(15, 15, 15, 0.45);
+  --ink-faint: rgba(15, 15, 15, 0.12);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🔄 RESET CSS
+   ───────────────────────────────────────────────────────────────
+   Remove os estilos padrão do navegador pra que tudo comece
+   do zero e fique igual em Chrome, Firefox, Safari, etc.
+   
+   Pra que serve cada regra:
+   - margin/padding 0 → navegadores adicionam margens em <h1>, <p>, <ul>
+   - box-sizing: border-box → padding e border entram no tamanho total
+   - list-style: none → remove bolinhas das <ul>
+   ═══════════════════════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;          /* scroll suave ao clicar em âncoras (#) */
+  -webkit-text-size-adjust: 100%;   /* evita zoom automático em iOS */
+}
+
+body {
+  font-family: var(--font-body);    /* Manrope como fonte padrão */
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;                 /* espaçamento entre linhas confortável */
+  overflow-x: hidden;               /* nunca aparece scroll horizontal */
+  -webkit-font-smoothing: antialiased;       /* texto mais nítido no Mac */
+  -moz-osx-font-smoothing: grayscale;
+  transition: background var(--duration), color var(--duration);
+}
+
+/* Efeito grain (grão de filme) sutil — dá textura ao fundo escuro */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;             /* não interfere em cliques */
+  z-index: 9990;
+}
+
+/* Remoções padrão */
+ul, ol { list-style: none; }
+a      { text-decoration: none; color: inherit; }
+img    { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📦 CONTAINER — CENTRALIZA E LIMITA LARGURA
+   ───────────────────────────────────────────────────────────────
+   Classe utilitária usada em TODA section do site.
+   
+   width: 100% → ocupa toda a tela
+   max-width: var(--container-max) → mas nunca passa de 1100px
+   margin-inline: auto → centraliza horizontalmente
+   padding-inline → espaçamento lateral responsivo
+   ═══════════════════════════════════════════════════════════════ */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ♿ SKIP LINK — ACESSIBILIDADE POR TECLADO
+   ───────────────────────────────────────────────────────────────
+   Invisível normalmente. Quando o usuário pressiona Tab,
+   aparece no topo e permite pular direto pro conteúdo principal.
+   
+   Por que isso importa?
+   Usuários de leitores de tela (cegos) e quem navega por teclado
+   não precisam passar por toda a navbar antes de chegar ao conteúdo.
+   É obrigatório pra acessibilidade (WCAG 2.1 nível A).
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link {
+  position: absolute;
+  top: -100%;                      /* escondido acima da tela */
+  left: 1rem;
+  background: var(--fire-red);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;                          /* aparece quando recebe foco via Tab */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🎬 LOADING SCREEN
+   ───────────────────────────────────────────────────────────────
+   Tela de carregamento que aparece enquanto o site carrega.
+   O JS remove ela quando window.onload dispara.
+   ═══════════════════════════════════════════════════════════════ */
+.loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+.loading-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--border);
+  border-top-color: var(--fire-orange);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🖱️ CURSOR CUSTOMIZADO
+   ───────────────────────────────────────────────────────────────
+   Só aparece em dispositivos com mouse (pointer: fine).
+   Em celular/tablet, o cursor padrão continua funcionando.
+   
+   #cursor-dot  → ponto pequeno que segue o mouse instantaneamente
+   #cursor-ring → anel maior que "arrasta" atrás (transition lenta)
+   ═══════════════════════════════════════════════════════════════ */
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+
+#cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--fire-orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--fire-orange),
+              0 0 20px rgba(255, 107, 0, 0.6);
+  opacity: 0;                     /* invisível até o primeiro movimento */
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(255, 107, 0, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: left 0.12s ease-out, top 0.12s ease-out,
+              width 0.2s, height 0.2s, border-color 0.2s;
+  opacity: 0;
+}
+
+/* Aparece após o primeiro movimento do mouse */
+#cursor-dot.visible,
+#cursor-ring.visible { opacity: 1; }
+
+/* Expande o anel quando sobre links/botões */
+body.cursor-hover #cursor-ring {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(255, 107, 0, 0.9);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📐 SECTION HEADER — CABEÇALHO REUTILIZÁVEL
+   ───────────────────────────────────────────────────────────────
+   Usado em TODA seção: tag + título + subtítulo.
+   Centralizado, responsivo, com animação de reveal.
+   ═══════════════════════════════════════════════════════════════ */
+.section-header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* Tag / eyebrow — texto pequeno acima do título */
+.section-eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fire-orange);
+  padding: 0.4rem 1rem;
+  border: 1px solid rgba(255, 107, 0, 0.25);
+  border-radius: var(--radius-full);
+  background: rgba(255, 107, 0, 0.08);
+  margin-bottom: 1rem;
+}
+
+/* Título grande */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* Palavra em destaque (itálico colorido) */
+.section-title em {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--fire-orange);
+}
+
+/* Subtítulo */
+.section-sub {
+  margin-top: 0.65rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* ── Tags de galeria/CTA (estilo alternativo) ── */
+.sec-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fire-red);
+  margin-bottom: 0.5rem;
+}
+
+.sec-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.sec-title .acc {
+  color: var(--fire-red);
+}
+
+.sec-sub {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ✨ SCROLL REVEAL — ANIMAÇÃO DE ENTRADA
+   ───────────────────────────────────────────────────────────────
+   Elementos com atributo data-reveal começam invisíveis e
+   "sobem" quando entram na tela (via IntersectionObserver no JS).
+   
+   .in → classe adicionada pelo JS quando o elemento é visível.
+   ═══════════════════════════════════════════════════════════════ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease-out),
+              transform 0.6s var(--ease-out);
+}
+
+[data-reveal].in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🎯 ACCENT — CLASSE UTILITÁRIA
+   ───────────────────────────────────────────────────────────────
+   Usada em spans dentro de títulos pra colorir palavras.
+   Ex: VANESSA <span class="accent">RAFAELLA</span>
+   ═══════════════════════════════════════════════════════════════ */
+.accent {
+  color: var(--fire-orange);
+}

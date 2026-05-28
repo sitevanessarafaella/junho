@@ -1,0 +1,715 @@
+/* ════════════════════════════════════════════════════════════════
+   📄 nav.css — Navbar + Menu Mobile
+   ════════════════════════════════════════════════════════════════
+   
+   Este arquivo contém TODOS os estilos da navegação:
+   - Navbar fixa no topo
+   - Logo com foto e selo verificado
+   - Links desktop
+   - Controles (tema, idioma, menu)
+   - Menu mobile (painel lateral)
+   - Overlay escuro
+   
+   📌 DEPENDE DE: base.css (variáveis)
+   📌 USADO POR:  components/nav.html + components/mobile-menu.html
+   
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🧭 NAVBAR — BARRA FIXA NO TOPO
+   ───────────────────────────────────────────────────────────────
+   position: fixed → gruda no topo mesmo quando rola a página
+   z-index: 1000   → fica acima de todo o conteúdo
+   backdrop-filter  → efeito de vidro fosco (blur) no fundo
+   
+   A classe .scrolled é adicionada pelo JS quando o usuário
+   rola a página, adicionando sombra pra separar do conteúdo.
+   ═══════════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;          /* left: 0 + right: 0 em uma linha */
+  height: var(--nav-height);
+  z-index: 1000;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);   /* Safari precisa do prefixo */
+  transition: box-shadow var(--duration), background var(--duration);
+}
+
+/* Sombra quando rola — adicionada via JS */
+.nav.scrolled {
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Layout interno: LOGO | LINKS | CONTROLES ─────────────── 
+   display: flex      → alinha os 3 grupos em linha
+   justify-content: space-between → empurra logo pra esquerda,
+                                     controles pra direita
+   O grupo do meio (links) fica invisível no mobile
+──────────────────────────────────────────────────────────── */
+.nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: var(--container-padding);
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🖼️ LOGO — Foto + Nome + Subtítulo
+   ═══════════════════════════════════════════════════════════════ */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;            /* nunca encolhe quando falta espaço */
+  text-decoration: none;
+}
+
+/* ── Foto circular ───────────────────────────────────────── */
+.nav-logo-photo {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.nav-logo-photo img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;         /* corta a imagem pra caber no círculo */
+  border: 2px solid var(--fire-orange);
+}
+
+/* Anel pulsante — efeito decorativo ao redor da foto.
+   Usa ::before (pseudo-elemento) pra não precisar de HTML extra.
+   A animação faz o anel expandir/retrair suavemente. */
+.nav-logo-photo::before {
+  content: '';
+  position: absolute;
+  inset: -4px;               /* 4px maior que a foto em todos os lados */
+  border-radius: 50%;
+  border: 1px solid var(--fire-glow);
+  animation: ringPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1);    }
+  50%      { opacity: 1;   transform: scale(1.06); }
+}
+
+/* ── Selo verificado (✓ azul) ────────────────────────────── 
+   Posicionado no canto inferior direito da foto.
+   position: absolute → se posiciona em relação ao .nav-logo-photo
+*/
+.verified-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  background: #1DA1F2;        /* azul do Twitter/verificado */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);  /* borda na cor do fundo → "recorta" */
+}
+
+.verified-badge i {
+  color: white;
+  font-size: 0.45rem;
+}
+
+/* ── Textos do logo ──────────────────────────────────────── */
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.nav-logo-name {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* "RAFAELLA" em laranja fire */
+.nav-logo-name .accent {
+  color: var(--fire-orange);
+}
+
+.nav-logo-sub {
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🔗 LINKS DESKTOP
+   ───────────────────────────────────────────────────────────────
+   Escondidos no mobile (display: none).
+   Aparecem em telas ≥ 768px (veja o @media no final).
+   
+   Cada link tem uma linha embaixo que anima no hover
+   (feita com ::after pseudo-elemento).
+   ═══════════════════════════════════════════════════════════════ */
+.nav-links {
+  display: none;              /* mobile-first: escondido */
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  position: relative;
+  transition: color var(--duration);
+}
+
+/* Linha animada no hover — começa com width: 0 e expande pra 100% */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--fire-orange);
+  transition: width var(--duration) var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--fire-orange);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🎛️ CONTROLES — Tema + Idioma + Menu
+   ═══════════════════════════════════════════════════════════════ */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Botão ícone (tema) ──────────────────────────────────── */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  transition: all var(--duration);
+}
+
+.icon-btn:hover {
+  border-color: var(--fire-orange);
+  color: var(--fire-orange);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🌐 SELETOR DE IDIOMA (dropdown)
+   ───────────────────────────────────────────────────────────────
+   Composto por:
+   - .lang-btn   → botão que mostra idioma atual (🇧🇷 PT ▾)
+   - .lang-drop  → dropdown com opções
+   - .lang-opt   → cada opção (PT, EN, ES)
+   
+   O dropdown começa invisível (opacity: 0, visibility: hidden)
+   e aparece quando .lang-sel recebe a classe .open via JS.
+   ═══════════════════════════════════════════════════════════════ */
+.lang-sel {
+  position: relative;          /* pai posicional do dropdown */
+}
+
+/* Botão principal do idioma */
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all var(--duration);
+}
+
+.lang-btn:hover {
+  border-color: var(--fire-orange);
+  color: var(--fire-orange);
+}
+
+/* Foco visível — acessibilidade por teclado
+   :focus-visible aparece só via Tab, não via clique do mouse */
+.lang-btn:focus-visible {
+  outline: 2px solid var(--fire-orange);
+  outline-offset: 2px;
+}
+
+/* Seta ▾ que gira 180° quando aberto */
+.lang-arrow svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  transition: transform var(--duration);
+}
+
+.lang-sel.open .lang-arrow svg {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown de idiomas ─────────────────────────────────── 
+   position: absolute → se posiciona em relação ao .lang-sel
+   top: calc(100% + 8px) → 8px abaixo do botão
+*/
+.lang-drop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 170px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hi);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  /* Começa invisível */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--duration),
+              visibility var(--duration),
+              transform var(--duration) var(--ease-out);
+  z-index: 200;
+}
+
+/* Título do dropdown */
+.lang-drop p {
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+  padding: 4px 10px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+/* Aparece quando .lang-sel tem classe .open */
+.lang-sel.open .lang-drop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Cada opção de idioma */
+.lang-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition: background var(--duration), color var(--duration);
+}
+
+.lang-opt:hover {
+  background: rgba(255, 107, 0, 0.08);
+  color: var(--fire-orange);
+}
+
+/* Opção selecionada (aria-selected="true") */
+.lang-opt[aria-selected="true"] {
+  color: var(--fire-orange);
+  background: rgba(255, 107, 0, 0.08);
+  font-weight: 700;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🟠 BOTÃO MENU (desktop)
+   ───────────────────────────────────────────────────────────────
+   Botão rosa/fire visível só em desktop.
+   Abre o mesmo painel lateral do hamburger.
+   ═══════════════════════════════════════════════════════════════ */
+.btn-menu-desktop {
+  display: none;              /* aparece em ≥ 768px */
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  height: 36px;
+  background: var(--fire-red);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--duration), transform var(--duration);
+}
+
+.btn-menu-desktop:hover {
+  background: var(--fire-orange);
+  transform: translateY(-1px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ☰ HAMBURGER (mobile)
+   ───────────────────────────────────────────────────────────────
+   3 <span> = 3 linhas.
+   Quando .active:
+     span:1 → gira 45° e desce → vira o \ do X
+     span:2 → desaparece
+     span:3 → gira -45° e sobe → vira o / do X
+   ═══════════════════════════════════════════════════════════════ */
+.hamburger {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 0 8px;
+  transition: border-color var(--duration);
+}
+
+.hamburger:hover {
+  border-color: var(--fire-orange);
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink-soft);
+  border-radius: 2px;
+  transition: transform var(--duration), opacity var(--duration),
+              background var(--duration);
+}
+
+/* Animação: 3 linhas → X */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background: var(--fire-orange);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background: var(--fire-orange);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📲 MENU MOBILE — PAINEL LATERAL
+   ───────────────────────────────────────────────────────────────
+   Painel que desliza da direita.
+   
+   right: -100% → fora da tela (escondido)
+   right: 0     → na tela (visível, via .active)
+   
+   O overlay (.mob-overlay) escurece o fundo.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Overlay escuro ──────────────────────────────────────── */
+.mob-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1400;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration), visibility var(--duration);
+  backdrop-filter: blur(4px);
+}
+
+.mob-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── Painel lateral ──────────────────────────────────────── */
+.mob-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;               /* começa fora da tela */
+  width: min(85vw, 320px);    /* min() → no máximo 320px OU 85% da tela */
+  height: 100vh;
+  height: 100dvh;             /* dvh = viewport dinâmico (melhor em mobile) */
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border-hi);
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transition: right 0.4s var(--ease-out);
+}
+
+.mob-menu.active {
+  right: 0;                   /* entra na tela */
+}
+
+/* ── Cabeçalho do menu ───────────────────────────────────── */
+.mob-menu-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mob-menu-brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Botão fechar (X) */
+.mob-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 1rem;
+  transition: all var(--duration);
+}
+
+.mob-close:hover {
+  border-color: var(--fire-orange);
+  color: var(--fire-orange);
+}
+
+/* ── Links do menu ───────────────────────────────────────── */
+.mob-nav {
+  padding: 0.5rem 0;
+}
+
+.mob-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-left: 2px solid transparent;  /* barra que aparece no hover */
+  transition: color var(--duration), padding-left var(--duration),
+              background var(--duration), border-color var(--duration);
+}
+
+.mob-nav a i {
+  width: 18px;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--ink-mute);
+  transition: color var(--duration);
+}
+
+/* Hover: barra laranja aparece à esquerda */
+.mob-nav a:hover {
+  color: var(--fire-orange);
+  background: rgba(255, 107, 0, 0.06);
+  border-left-color: var(--fire-orange);
+  padding-left: 1.75rem;     /* empurra levemente pra direita */
+}
+
+.mob-nav a:hover i {
+  color: var(--fire-orange);
+}
+
+/* Divisor horizontal */
+.mob-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.3rem 1.25rem;
+}
+
+/* Label de seção ("Plataformas") */
+.mob-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 0.65rem 1.5rem 0.2rem;
+}
+
+/* ── Grid de plataformas ─────────────────────────────────── */
+.mob-plats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.mob-plat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-decoration: none;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;  /* remove destaque azul no tap */
+}
+
+.mob-plat:hover {
+  border-color: var(--fire-orange);
+  background: rgba(255, 107, 0, 0.06);
+  color: var(--fire-orange);
+}
+
+.mob-plat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.mob-plat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+/* ── Rodapé do menu ──────────────────────────────────────── */
+.mob-menu-footer {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;           /* empurra pro final do menu */
+}
+
+/* Botão de tema no mobile */
+.mob-theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  width: 100%;
+  transition: all var(--duration);
+}
+
+.mob-theme-btn:hover {
+  border-color: var(--fire-orange);
+  color: var(--fire-orange);
+}
+
+/* Ícones sociais no mobile */
+.mob-socials {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.mob-soc-btn {
+  flex: 1;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  color: var(--ink-mute);
+  text-decoration: none;
+  transition: all var(--duration);
+}
+
+.mob-soc-btn:hover {
+  color: var(--fire-orange);
+  border-color: var(--fire-orange);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📱 RESPONSIVO — Adaptações por tamanho de tela
+   ───────────────────────────────────────────────────────────────
+   
+   min-width: 768px = "a partir de tablets"
+   
+   ⚠️ Essas media queries ficam AQUI porque são específicas
+   da navbar. As media queries gerais ficam em responsive.css.
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+
+  /* Mostra os links desktop */
+  .nav-links {
+    display: flex;
+  }
+
+  /* Mostra o botão MENU rosa */
+  .btn-menu-desktop {
+    display: flex;
+  }
+
+  /* Esconde o hamburger (só mobile precisa dele) */
+  .hamburger {
+    display: none;
+  }
+}

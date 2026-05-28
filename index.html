@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║        VANESSA RAFAELLA · FIRE EDITION · MAIO 2026          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  📐 ESTRUTURA COMPONENTIZADA                                 ║
+  ║                                                              ║
+  ║  Este HTML é um "esqueleto":                                 ║
+  ║  - Os containers (divs vazios) recebem componentes via JS    ║
+  ║  - O conteúdo específico da página fica direto aqui          ║
+  ║  - Componentes reutilizáveis ficam em /components/           ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="pt-BR" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vanessa Rafaella — conteúdo exclusivo no Privacy, OnlyFans, vídeos avulsos e muito mais.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050508">
+  <title>Vanessa Rafaella · Conteúdo Exclusivo</title>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       📦 FONTES
+       ─────────────────────────────────────────────────────────
+       preconnect → avisa o navegador pra se conectar ao Google Fonts
+       ANTES de precisar baixar as fontes. Acelera o carregamento.
+  ═══════════════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (ícones) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🎨 CSS — A ORDEM IMPORTA!
+       ─────────────────────────────────────────────────────────
+       CSS funciona em cascata: o que vem depois sobrescreve.
+       Por isso a ordem é:
+       
+       1. base.css       → variáveis + reset (base de tudo)
+       2. nav.css        → estilos da navbar
+       3. hero.css       → estilos do hero
+       4. sections.css   → todas as seções do meio
+       5. footer.css     → footer + barra fixa
+       6. responsive.css → media queries (SEMPRE por último)
+       
+       ⚠️ Se mudar a ordem, pode quebrar estilos!
+  ═══════════════════════════════════════════════════════════════ -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/nav.css">
+  <!-- <link rel="stylesheet" href="./css/hero.css"> -->
+  <!-- <link rel="stylesheet" href="./css/sections.css"> -->
+  <!-- <link rel="stylesheet" href="./css/footer.css"> -->
+  <!-- <link rel="stylesheet" href="./css/responsive.css"> -->
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ⏳ LOADING SCREEN
+       ─────────────────────────────────────────────────────────
+       Aparece enquanto a página carrega.
+       O JS remove ela no window.onload.
+       Estilos em base.css (.loading, .loading-spinner)
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="loading" id="Loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- 🖱️ Cursor customizado (só aparece com mouse — estilos em base.css) -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- ♿ Skip link — acessibilidade (estilos em base.css) -->
+  <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🧭 NAVBAR — COMPONENTE REUTILIZÁVEL
+       ─────────────────────────────────────────────────────────
+       Este div vazio vai receber o conteúdo de ./components/nav.html
+       O components-loader.js faz o fetch() e injeta o HTML aqui.
+       
+       ✅ Vantagem: se mudar a nav em nav.html, muda em TODAS as páginas.
+       ❌ Sem componentes: teria que copiar/colar a nav em cada página.
+  ═══════════════════════════════════════════════════════════════ -->
+  <header>
+    <div id="nav-container">
+      <!-- nav.html será carregado aqui pelo JS -->
+    </div>
+  </header>
+
+  <!-- Menu mobile (também componente separado) -->
+  <div id="mobile-overlay" class="mob-overlay" aria-hidden="true"></div>
+  <div id="mobile-menu-container">
+    <!-- mobile-menu.html será carregado aqui -->
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       📄 CONTEÚDO PRINCIPAL
+       ─────────────────────────────────────────────────────────
+       Aqui fica o conteúdo específico de CADA página.
+       A navbar e o footer são iguais em todas as páginas,
+       mas o <main> muda: index tem hero + seções, fotos tem galeria.
+  ═══════════════════════════════════════════════════════════════ -->
+  <main id="main-content">
+
+    <!-- 🎥 HERO (Etapa futura — hero.css + hero.html ou direto aqui) -->
+    <!-- O hero costuma ser único por página, então pode ficar direto no HTML -->
+    <section class="hero" id="home" style="min-height:100svh; display:flex; align-items:center; justify-content:center;">
+      <div class="container" style="text-align:center;">
+        <p class="section-eyebrow">✦ Conteúdo Exclusivo</p>
+        <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,8vw,5rem); font-weight:800; letter-spacing:-0.03em; line-height:1;">
+          Vanessa
+          <span style="font-family:var(--font-accent); font-style:italic; color:var(--fire-orange);">
+            Rafaella
+          </span>
+        </h1>
+        <p style="margin-top:1rem; color:var(--ink-soft); font-size:1rem;">
+          Fotos e vídeos premium — conteúdo original e verificado
+        </p>
+        <p style="margin-top:3rem; font-size:0.7rem; color:var(--ink-mute); letter-spacing:.2em; text-transform:uppercase;">
+          🔥 base.css carregado com sucesso · Etapa 1 concluída
+        </p>
+      </div>
+    </section>
+
+    <!-- As seções vão sendo adicionadas nas próximas etapas -->
+    <!-- Etapa futura: Plataformas, Vídeos, Telegram, Galeria, CTA -->
+
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       📄 FOOTER — COMPONENTE REUTILIZÁVEL
+       ─────────────────────────────────────────────────────────
+       Mesmo esquema da navbar: div vazio + fetch via JS.
+  ═══════════════════════════════════════════════════════════════ -->
+  <div id="footer-container">
+    <!-- footer.html será carregado aqui -->
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🎬 SCRIPTS — A ORDEM IMPORTA!
+       ─────────────────────────────────────────────────────────
+       1. Loading screen (inline — precisa rodar primeiro)
+       2. components-loader.js (carrega nav + footer)
+       3. Módulos individuais (nav.js, theme.js, etc)
+       
+       ⚠️ Os callbacks (initNav, etc) só são chamados DEPOIS
+       que o componente foi carregado, garantindo que o HTML
+       já existe no DOM quando o JS tenta acessá-lo.
+  ═══════════════════════════════════════════════════════════════ -->
+
+  <!-- Remove loading screen -->
+  <script>
+    window.addEventListener('load', () => {
+      const l = document.getElementById('Loading');
+      if (l) { l.style.opacity = '0'; setTimeout(() => l.remove(), 500); }
+    });
+  </script>
+
+  <!-- ── JS da navbar (precisa carregar ANTES do loadComponents) ── -->
+  <script src="./js/nav.js"></script>
+
+  <!-- Carregador de componentes -->
+  <script src="./js/components-loader.js"></script>
+
+  <!-- Carrega os componentes e inicializa cada um -->
+  <script>
+    loadComponents([
+      { id: 'nav-container',         path: './components/nav.html',         callback: initNav },
+      { id: 'mobile-menu-container', path: './components/mobile-menu.html', callback: initMobileMenu },
+      // { id: 'footer-container',   path: './components/footer.html' }  ← Etapa 3
+    ]).then(() => {
+      // Depois que TODOS os componentes carregaram,
+      // ativa o scroll reveal pra toda a página
+      setupScrollReveal();
+    });
+  </script>
+
+</body>
+</html>

@@ -2,10 +2,10 @@
 # 🎀 vanessa-site
 
 **Site Oficial da Vanessa Rafaella**  
-*O site mais putinha, organizado e bonito da internet* 🔥
+
 
 > Site 100% frontend, performático, responsivo e com cara de OnlyFans premium.  
-> Feito com amor, tesão e muito café (e um pouquinho de dark mode pra ficar safado de noite).
+
 
 ---
 

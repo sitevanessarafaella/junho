@@ -1,12 +1,12 @@
 
 **ESTRUTURA**
 
-vanessa-site/
+vanessa-site/<br>
+│<br>
+├── index.html                    ← monta tudo com os componentes<br>
+├── fotos.html                    ← galeria (futura)<br>
 │
-├── index.html                    ← monta tudo com os componentes
-├── fotos.html                    ← galeria (futura)
-│
-├── css/
+├── css/<br>
 │   ├── base.css                  ← variáveis + reset + container
 │   ├── nav.css                   ← navbar + menu mobile
 │   ├── hero.css                  ← hero com vídeo

@@ -1,0 +1,220 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  📄 COMPONENTE: FOOTER                                      ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  Contém 3 partes:                                            ║
+  ║                                                              ║
+  ║  1. site-footer  → footer textual (logo, links, social,     ║
+  ║                     copyright). Fica no final da página.     ║
+  ║                                                              ║
+  ║  2. footer       → barra fixa no rodapé com ícones de        ║
+  ║                     plataformas. Sempre visível.              ║
+  ║                                                              ║
+  ║  3. wa-float     → botão flutuante do WhatsApp. Fixo no      ║
+  ║                     canto inferior direito.                   ║
+  ║                                                              ║
+  ║  📌 COMO USAR:                                               ║
+  ║  No index.html:                                              ║
+  ║    <div id="footer-container"></div>                         ║
+  ║                                                              ║
+  ║  📎 Estilos: css/footer.css                                  ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     1️⃣ FOOTER TEXTUAL
+     ───────────────────────────────────────────────────────────────
+     Footer principal com informações do site.
+     
+     role="contentinfo" → indica pro leitor de tela que é o rodapé.
+     É o landmark padrão do <footer>, mas como estamos dentro
+     de um <div> (e não um <footer> nativo), precisamos declarar.
+     
+     Estrutura:
+     - Logo com nome
+     - Links de navegação (âncoras internas)
+     - Ícones sociais (com imagens)
+     - Copyright
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="site-footer" id="contact" role="contentinfo">
+  <div class="site-footer-inner container">
+
+    <!-- Logo do footer -->
+    <div class="sf-logo">VANESSA <span class="accent">RAFAELLA</span></div>
+
+    <!-- ── Links de navegação ────────────────────────────────
+         aria-label diferencia esta <nav> da navbar principal.
+         Leitores de tela listam todas as <nav> da página —
+         sem aria-label, elas ficam indistinguíveis.
+    ──────────────────────────────────────────────────────── -->
+    <nav aria-label="Links do rodapé">
+      <ul class="sf-links">
+        <li>
+          <a href="#main-platforms"
+             data-pt="Plataformas" data-en="Platforms" data-es="Plataformas">
+            Plataformas
+          </a>
+        </li>
+        <li>
+          <a href="#gallery"
+             data-pt="Galeria" data-en="Gallery" data-es="Galería">
+            Galeria
+          </a>
+        </li>
+        <li>
+          <a href="#exclusive"
+             data-pt="Exclusivo" data-en="Exclusive" data-es="Exclusivo">
+            Exclusivo
+          </a>
+        </li>
+        <li>
+          <a href="legal/terms-of-service.html"
+             data-pt="Termos" data-en="Terms" data-es="Términos">
+            Termos
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ── Ícones sociais ────────────────────────────────────
+         Cada ícone usa <img> ao invés de Font Awesome.
+         Motivo: as imagens são os logos oficiais das plataformas,
+         que têm formas específicas (o X do Twitter, o cadeado
+         do Privacy) que ícones genéricos não representam bem.
+         
+         onerror → se a imagem falhar, mostra o nome como texto.
+    ──────────────────────────────────────────────────────── -->
+    <div class="sf-social" aria-label="Redes sociais">
+      <a href="https://www.onlyfans.com/vanessarafaellavip"
+         class="soc-btn of" target="_blank" rel="noopener" aria-label="OnlyFans">
+        <img src="./assets/icon/of-blue-icon.png" alt="OnlyFans"
+             onerror="this.alt='OF'; this.style.display='none'">
+      </a>
+      <a href="https://www.xvideos.com/channels/ts_vanessa_rafaella"
+         class="soc-btn xv" target="_blank" rel="noopener" aria-label="Xvideos">
+        <img src="./assets/icon/xvideos-vanessarafaella.png" alt="XVideos"
+             onerror="this.alt='XV'; this.style.display='none'">
+      </a>
+      <a href="https://x.com/vvanessarafaela"
+         class="soc-btn tw" target="_blank" rel="noopener" aria-label="Twitter/X">
+        <img src="./assets/icon/tt-icon.png" alt="Twitter"
+             onerror="this.alt='X'; this.style.display='none'">
+      </a>
+      <a href="https://www.instagram.com/vvanessarafaella"
+         class="soc-btn ig" target="_blank" rel="noopener" aria-label="Instagram">
+        <img src="./assets/icon/instagram-icon.jpg" alt="Instagram"
+             onerror="this.alt='IG'; this.style.display='none'">
+      </a>
+      <a href="https://t.me/+gyIHkFWeeB8yY2Zk"
+         class="soc-btn tg" target="_blank" rel="noopener" aria-label="Telegram">
+        <img src="./assets/icon/telegram-icon.png" alt="Telegram"
+             onerror="this.alt='TG'; this.style.display='none'">
+      </a>
+    </div>
+
+    <!-- Copyright -->
+    <p class="sf-copy">
+      © 2026 Vanessa Rafaella · Recife, PE ·
+      <a href="legal/terms-of-service.html">Termos de Uso</a>
+    </p>
+
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     2️⃣ BARRA FIXA DE ÍCONES (bottom bar)
+     ───────────────────────────────────────────────────────────────
+     Barra fixa no rodapé da tela, sempre visível.
+     5 ícones de plataformas com labels curtos.
+     
+     role="navigation" → indica que é navegação (não conteúdo).
+     
+     --btn-c → variável CSS local (custom property) usada
+     em cada botão pra definir a cor individual.
+     Funciona assim no CSS:
+       .footer-btn:hover { color: var(--btn-c); }
+     E no HTML: style="--btn-c: var(--privacy)"
+     
+     Isso evita criar uma classe separada pra cada cor.
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer" role="navigation" aria-label="Navegação rápida">
+  <div class="footer-inner">
+
+    <a href="https://privacy.com.br/checkout/vanessarafaella"
+       class="footer-btn" aria-label="Privacy"
+       style="--btn-c: var(--privacy)"
+       target="_blank" rel="noopener">
+      <div class="footer-icon">
+        <img src="./assets/icon/privacy-full-icon.png" alt="Privacy"
+             onerror="this.parentNode.innerHTML='🔒'">
+      </div>
+      <span>Privacy</span>
+    </a>
+
+    <a href="https://www.onlyfans.com/vanessarafaellavip"
+       class="footer-btn" aria-label="OnlyFans"
+       style="--btn-c: var(--onlyfans)"
+       target="_blank" rel="noopener">
+      <div class="footer-icon">
+        <img src="./assets/icon/of-blue-icon.png" alt="OnlyFans"
+             onerror="this.parentNode.innerHTML='🔥'">
+      </div>
+      <span>OnlyFans</span>
+    </a>
+
+    <a href="#gallery"
+       class="footer-btn" aria-label="Fotos"
+       style="--btn-c: var(--fire-red)">
+      <div class="footer-icon">
+        <img src="./assets/images/fotos-icon.png" alt="Fotos"
+             onerror="this.parentNode.innerHTML='📸'">
+      </div>
+      <span data-pt="Fotos" data-en="Photos" data-es="Fotos">Fotos</span>
+    </a>
+
+    <a href="https://www.xvideos.com/channels/ts_vanessa_rafaella"
+       class="footer-btn" aria-label="Vídeos"
+       style="--btn-c: var(--xvideos)"
+       target="_blank" rel="noopener">
+      <div class="footer-icon">
+        <img src="./assets/icon/icon-xvideos.svg" alt="Vídeos"
+             onerror="this.parentNode.innerHTML='🎬'">
+      </div>
+      <span data-pt="Vídeos" data-en="Videos" data-es="Videos">Vídeos</span>
+    </a>
+
+    <a href="https://t.me/+gyIHkFWeeB8yY2Zk"
+       class="footer-btn" aria-label="Telegram"
+       style="--btn-c: var(--telegram)"
+       target="_blank" rel="noopener">
+      <div class="footer-icon">
+        <img src="./assets/icon/telegram-icon.png" alt="Telegram"
+             onerror="this.parentNode.innerHTML='✈️'">
+      </div>
+      <span>Telegram</span>
+    </a>
+
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     3️⃣ WHATSAPP FLUTUANTE
+     ───────────────────────────────────────────────────────────────
+     Botão fixo no canto inferior direito.
+     position: fixed → não se move com o scroll.
+     
+     bottom: calc(var(--footer-bar-height) + 1rem) → fica ACIMA
+     da barra fixa, pra não sobrepor.
+     ═══════════════════════════════════════════════════════════════ -->
+<a href="https://wa.me/5581995469947"
+   class="wa-float"
+   target="_blank" rel="noopener noreferrer"
+   aria-label="WhatsApp"
+   id="waFloat">
+  <i class="fab fa-whatsapp"></i>
+</a>

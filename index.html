@@ -55,7 +55,7 @@
   <link rel="stylesheet" href="./css/nav.css">
   <!-- <link rel="stylesheet" href="./css/hero.css"> -->
   <!-- <link rel="stylesheet" href="./css/sections.css"> -->
-  <!-- <link rel="stylesheet" href="./css/footer.css"> -->
+  <link rel="stylesheet" href="./css/footer.css">
   <!-- <link rel="stylesheet" href="./css/responsive.css"> -->
 </head>
 
@@ -126,7 +126,7 @@
           Fotos e vídeos premium — conteúdo original e verificado
         </p>
         <p style="margin-top:3rem; font-size:0.7rem; color:var(--ink-mute); letter-spacing:.2em; text-transform:uppercase;">
-          🔥 base.css carregado com sucesso · Etapa 1 concluída
+          🔥 Componentes carregados · Nav + Menu + Footer
         </p>
       </div>
     </section>
@@ -143,7 +143,7 @@
        Mesmo esquema da navbar: div vazio + fetch via JS.
   ═══════════════════════════════════════════════════════════════ -->
   <div id="footer-container">
-    <!-- footer.html será carregado aqui -->
+    <!-- footer.html será carregado aqui (3 partes: textual + barra fixa + WhatsApp) -->
   </div>
 
 
@@ -178,7 +178,7 @@
     loadComponents([
       { id: 'nav-container',         path: './components/nav.html',         callback: initNav },
       { id: 'mobile-menu-container', path: './components/mobile-menu.html', callback: initMobileMenu },
-      // { id: 'footer-container',   path: './components/footer.html' }  ← Etapa 3
+      { id: 'footer-container',      path: './components/footer.html' }
     ]).then(() => {
       // Depois que TODOS os componentes carregaram,
       // ativa o scroll reveal pra toda a página
